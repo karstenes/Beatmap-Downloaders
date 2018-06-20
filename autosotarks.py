@@ -10,7 +10,6 @@ import pickle
 from operator import itemgetter
 from multiprocessing import Queue
 
-apikey = "668dc7d36bd1bf2905d89e0119c05325c41440eb"
 result = []
 todownload = []
 

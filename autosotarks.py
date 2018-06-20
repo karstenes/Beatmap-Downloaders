@@ -16,7 +16,7 @@ todownload = []
 
 def dotitlebar():
     os.system("cls")
-    print("-----[Super Ultimate Sotarks Downloader V1]-----\n")
+    print("-----[Super Ultimate Sotarks Downloader V1 by karstenes]-----\n")
 
 def loadlogin():
     try:

@@ -12,4 +12,4 @@ Getlatestranked.py is currently a little buggy, but it should work.
 
 
 
-Sorry foe being too lazy to write any proper documentation, this was initially made as a joke.
+Sorry for being too lazy to write any proper documentation, this was initially made as a joke. (As can be seen in the title bar of the command line application; no, I'm not 12)

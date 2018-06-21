@@ -14,8 +14,20 @@ result = []
 todownload = []
 numbers = set()
 
-
-os.chdir(os.getenv('localappdata')+"\\osu!\\Songs")
+# Checks if directory exists and create one
+# Not everyone has osu! installed on default folder
+# Please, make a function to open files when download is finished, since it's easier this way.
+def createdir():
+    # Checks if dir exists
+    if os.path.exists("./DownloadedSongs"):
+        #Print message to user confirming that it exists
+        print("Found Song Downloads folder")
+        return 1
+    else:
+        # If not exists, print message to user and creates and changes to that
+        print("Download folder not found, creating one in local directory")
+        os.mkdir("./test")
+        os.chdir("./test")
 
 def RepresentsInt(s):
     try: 
@@ -24,8 +36,18 @@ def RepresentsInt(s):
     except ValueError:
         return False
 
+# This detects the operating system and clears the window
+def clearconsole():
+    # Windows
+    if os.name == "nt":
+        os.system("cls")
+    # Linux/Other
+    else:
+        os.system("clear")
+
+
 def dotitlebar():
-    os.system("cls")
+    clearconsole()
     print("-----[Super Ultimate Ranked Maps Downloader V1 by karstenes]-----\n")
 
 def loadlogin():
@@ -85,7 +107,7 @@ date = json.loads(requests.post("https://osu.ppy.sh/api/get_beatmaps", data={"k"
 q = querymaps(date)
 
 for i,v in enumerate(q):
-    if v["mode"]  != "0":
+    if v["mode"] != "0":
         del q[i]
     if v["approved"] != "1":
         del q[i]
@@ -121,6 +143,8 @@ qu = input("\nContinue? (Y/n): ")
 if qu.lower() == "y" or qu == "":
     pass
 else:
+    print("Closing application...")
+    time.sleep(2)
     sys.exit()
 
 

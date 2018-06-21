@@ -1,4 +1,5 @@
 import requests
+import getpass
 import json
 import os
 import itertools
@@ -14,8 +15,20 @@ result = []
 todownload = []
 numbers = set()
 
-
-os.chdir(os.getenv('localappdata')+"\\osu!\\Songs")
+# Checks if directory exists and create one
+# Not everyone has osu! installed on default folder
+# Please, make a function to open files when download is finished, since it's easier this way.
+def createdir():
+    # Checks if dir exists
+    if os.path.exists("./DownloadedSongs"):
+        # Print message to user confirming that it exists
+        print("Found Song Downloads folder")
+        return 1
+    else:
+        # If not exists, print message to user and creates and changes to that
+        print("Download folder not found, creating one in local directory")
+        os.mkdir("./DownloadedSongs")
+        os.chdir("./DownloadedSongs")
 
 def RepresentsInt(s):
     try: 
@@ -24,8 +37,18 @@ def RepresentsInt(s):
     except ValueError:
         return False
 
+# This detects the operating system and clears the window
+def clearconsole():
+    # Windows
+    if os.name == "nt":
+        os.system("cls")
+    # Linux/Other
+    else:
+        os.system("clear")
+
+
 def dotitlebar():
-    os.system("cls")
+    clearconsole()
     print("-----[Super Ultimate Ranked Maps Downloader V1 by karstenes]-----\n")
 
 def loadlogin():
@@ -52,7 +75,7 @@ if login:
 if not login:
     login["username"] = input("osu username: ")
     print()
-    login["password"] = input("osu password: ")
+    login["password"] = getpass.getpass("osu password: ")
     print()
     login["apikey"] = input("api key (https://osu.ppy.sh/p/api): ")
     print()
@@ -80,12 +103,14 @@ final = sorted(numbers)[-1]
 def querymaps(date):
     r = requests.post("https://osu.ppy.sh/api/get_beatmaps", data={"k":apikey, "since":date})
     return json.loads(r.content)
+
+
 date = json.loads(requests.post("https://osu.ppy.sh/api/get_beatmaps", data={"k":apikey, "s":str(final)}).content)[0]["approved_date"]
 
 q = querymaps(date)
 
 for i,v in enumerate(q):
-    if v["mode"]  != "0":
+    if v["mode"] != "0":
         del q[i]
     if v["approved"] != "1":
         del q[i]
@@ -121,6 +146,8 @@ qu = input("\nContinue? (Y/n): ")
 if qu.lower() == "y" or qu == "":
     pass
 else:
+    print("Closing application...")
+    time.sleep(2)
     sys.exit()
 
 
@@ -151,7 +178,7 @@ r = session.post("https://osu.ppy.sh/session", headers=headers, data="_token={}&
 
 dotitlebar()
 
-for i,v in enumerate(todownload):
+for i, v in enumerate(todownload):
     dotitlebar()
     print("Downloading: "+v["fullname"]+" "+str(i+1)+"\\"+str(len(todownload))+"\n")
     retries = 3

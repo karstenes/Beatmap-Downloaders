@@ -12,9 +12,13 @@ from multiprocessing import Queue
 
 result = []
 todownload = []
+platform  = os.name
 
 def dotitlebar():
-    os.system("cls")
+    if platform == "nt":
+    	os.system("cls")
+    else:
+	os.system("clear")
     print("-----[Super Ultimate Sotarks Downloader V1 by karstenes]-----\n")
 
 def loadlogin():
@@ -29,7 +33,15 @@ def loadlogin():
 def queryuser(userid):
 	r = requests.post("https://osu.ppy.sh/api/get_beatmaps", data={"k":apikey, "u":userid})
 	return json.loads(r.content)
-os.chdir(os.getenv('localappdata')+"\\osu!\\Songs")
+
+custom = input("Use a custom songs folder (default is in localappdata/osu!/Songs)? (Y/n): ")
+if custom.lower() == "y" or custom == "":
+    print()
+    folder = input("Custom songs folder: ")
+    os.chdir(folder)
+else:
+    os.chdir(os.getenv('localappdata')+"\\osu!\\Songs")
+
 
 dotitlebar()
 
@@ -132,8 +144,7 @@ for v in  todownload:
     with open(v["fullname"]+".osz", "wb+") as f:
         response = session.get("https://osu.ppy.sh/beatmapsets/{}/download".format(v["id"]), stream=True)
         total_length = response.headers.get('content-length')
-
-        if total_length is None: # no content length header
+        if total_length is None:
             f.write(response.content)
         else:
             dl = 0

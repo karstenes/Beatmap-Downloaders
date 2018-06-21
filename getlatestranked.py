@@ -1,4 +1,5 @@
 import requests
+import getpass
 import json
 import os
 import itertools
@@ -20,7 +21,7 @@ numbers = set()
 def createdir():
     # Checks if dir exists
     if os.path.exists("./DownloadedSongs"):
-        #Print message to user confirming that it exists
+        # Print message to user confirming that it exists
         print("Found Song Downloads folder")
         return 1
     else:
@@ -74,7 +75,7 @@ if login:
 if not login:
     login["username"] = input("osu username: ")
     print()
-    login["password"] = input("osu password: ")
+    login["password"] = getpass.getpass("osu password: ")
     print()
     login["apikey"] = input("api key (https://osu.ppy.sh/p/api): ")
     print()
@@ -102,6 +103,8 @@ final = sorted(numbers)[-1]
 def querymaps(date):
     r = requests.post("https://osu.ppy.sh/api/get_beatmaps", data={"k":apikey, "since":date})
     return json.loads(r.content)
+
+
 date = json.loads(requests.post("https://osu.ppy.sh/api/get_beatmaps", data={"k":apikey, "s":str(final)}).content)[0]["approved_date"]
 
 q = querymaps(date)
@@ -175,7 +178,7 @@ r = session.post("https://osu.ppy.sh/session", headers=headers, data="_token={}&
 
 dotitlebar()
 
-for i,v in enumerate(todownload):
+for i, v in enumerate(todownload):
     dotitlebar()
     print("Downloading: "+v["fullname"]+" "+str(i+1)+"\\"+str(len(todownload))+"\n")
     retries = 3

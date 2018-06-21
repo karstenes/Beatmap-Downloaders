@@ -26,8 +26,8 @@ def createdir():
     else:
         # If not exists, print message to user and creates and changes to that
         print("Download folder not found, creating one in local directory")
-        os.mkdir("./test")
-        os.chdir("./test")
+        os.mkdir("./DownloadedSongs")
+        os.chdir("./DownloadedSongs")
 
 def RepresentsInt(s):
     try: 

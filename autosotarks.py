@@ -16,9 +16,9 @@ platform  = os.name
 
 def dotitlebar():
     if platform == "nt":
-    	os.system("cls")
+        os.system("cls")
     else:
-	os.system("clear")
+        os.system("clear")
     print("-----[Super Ultimate Sotarks Downloader V1 by karstenes]-----\n")
 
 def loadlogin():
@@ -31,11 +31,12 @@ def loadlogin():
         return {}
 
 def queryuser(userid):
-	r = requests.post("https://osu.ppy.sh/api/get_beatmaps", data={"k":apikey, "u":userid})
-	return json.loads(r.content)
+    r = requests.post("https://osu.ppy.sh/api/get_beatmaps", data={"k":apikey, "u":userid})
+    return json.loads(r.content)
 
-custom = input("Use a custom songs folder (default is in localappdata/osu!/Songs)? (Y/n): ")
-if custom.lower() == "y" or custom == "":
+dotitlebar()
+custom = input("Use a custom songs folder (default is in localappdata/osu!/Songs)? (y/N): ")
+if custom.lower() == "y":
     print()
     folder = input("Custom songs folder: ")
     os.chdir(folder)
@@ -83,10 +84,10 @@ for k, g in itertools.groupby(q, getvals):
 songs = os.listdir(".")
 
 for v in result:
-	v['artist'] = re.sub("[\*.\":?\\\/\|]", "", v['artist'])
-	v['title'] = re.sub("[\*.\":\\\/\|?]", "", v['title'])
-	if "{} {} - {}".format(v["beatmapset_id"], v["artist"], v["title"]) not in songs:
-		todownload.append({"id":v["beatmapset_id"], "fullname":"{} {} - {}".format(v["beatmapset_id"], v["artist"], v["title"])})
+    v['artist'] = re.sub("[\*.\":?\\\/\|]", "", v['artist'])
+    v['title'] = re.sub("[\*.\":\\\/\|?]", "", v['title'])
+    if "{} {} - {}".format(v["beatmapset_id"], v["artist"], v["title"]) not in songs:
+        todownload.append({"id":v["beatmapset_id"], "fullname":"{} {} - {}".format(v["beatmapset_id"], v["artist"], v["title"])})
 
 dotitlebar()
 
